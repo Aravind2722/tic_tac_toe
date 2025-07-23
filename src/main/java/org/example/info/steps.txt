@@ -1,0 +1,101 @@
+Step 0:
+(Overview)
+    "Let me tell you what I know about tic tac te, so that I will be sure that we are aligned!
+    So, tic-tac-toe is the game that we played as kids, were 2 person pick x and o as symbols, start
+    filling a 3 x 3 board, until anyone aligns a row, or a column or a diagonal with the same symbol"
+
+    ---> Interviewer said Yes!
+
+Step 1:
+(Info about the design)
+    "Should the design be an entity based design, or a software system or a desktop application"
+
+    ---> Interviewer says that be it like a desktop app
+
+Note: entity meaning, just the models, while software system meaning end to end functionalities
+
+Step 2:
+(Persistence)
+    "Should I persist the data. If so, should I mimic the database operations or should I connnect to a real database"
+
+    ---> Interviewer says not to persist data for now. We can now use data structures to store one time data,
+        as long as the program runs.
+
+Step 3:
+(Input)
+    "How should the inputs be taken. Via API's endpoints, or command line or hard coded"
+
+    ---> Interviewer: Take inputs using command line
+
+Step 4:
+(Requirement gathering)
+Note: Lead the conversation by taking suggesting requirements and discussing it with the interviewer. Don't ask
+requirements directly from the interviewer, rather brainstorm it on your own and validate them with him
+
+1. Generally, people use to play with fixed size 3 x 3 board. As this is a desktop game, I'm thinking we could have
+   boards of variable size "n x n".
+   ---> Yes, good idea, please proceed
+
+2. Regarding the number of players, I guess it is fair for us to have the number according to the board size. I would
+    suggest, N-1...
+   ---> Yes, we can have that as such
+
+3. As there are multiple players, there can be multiple symbols too
+   ---> makes sense!
+
+4. As this is just a desktop game, generally two or more players would play on the same screen. If only one player
+    wants to play, then supports for bot players can be a good idea too
+   ---> Agreed
+
+5. There could be mutiple difficulty levels for a bot, we might include this too.
+   ---> Okay, interesting!
+
+6. Players sometimes tend to make a wrong move. Be it a small board, then they can very well restart the game.
+    But if board was big, and they make a mistake, they could not restart the game, as they would lose all their
+    progress. So I guess, it would be meaningful if I add an undo functionality!
+    ---> Yes, that is a good idea.
+
+7. Undo option, can be in global level, so that anyone can use it. Otherwise, it can also be player specific.
+    For now, I am planning to go with global level...
+    ---> Yes, works for now.
+
+8. Let me clarify about how the game starts and how it ends.
+    So, the game starts with a random player (say the first player in the list) and iterates to subsequent players
+    in a cyclic order...
+
+    Regarding ending the games, there are many ways.
+    A game ends when someone has won or a game ends when all has won but one (ludo, snake and ladder) rtc..
+
+    In our case, option 1 would be valid. So let me go with that for now.
+
+    ---> You are right. proceed
+
+Note: Generally, 5 to 8 requirements are more than enough.
+
+
+Addditional requirements:
+    1. Support tournaments (we need to persist data for this)
+    2. Leaderboard / Score of players (persistence is needed)
+    3. Team up functinality
+    4. Redo functionality
+    5. Time limit per move
+    6. What if somebody exits in the middle:
+        - Remove their symbols from the board or
+        - End the game or
+        - Replace the player with a bot etc...
+    7. Replay functionality
+
+
+Ways to Implement undo functionality:
+
+1. Remove the last move, empty the cell, and make the same player play again.
+    - While this is easy to implement, In games like chess etc... One move contains multiple changes.
+      For eg, after taking down a particular coin, now if the user redoes, the coin has to go its last place
+      and the taken down coin has to re appear...
+      So, in these case scenarios, we could prefer the next 2 ways
+
+2. Clear the board, remove the last move from the list and redo all the moves again.
+    - If TC is no constraint, we could prefer this..
+
+3. At each move, store a snapshot of the whole board. So that we can simply delete the last move's snapshot board from the list
+    - SC wise expensive. Use if SC is no constraint.
